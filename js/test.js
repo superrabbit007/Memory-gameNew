@@ -21,7 +21,9 @@ let arrayOpen = [];
 
 
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length;
+    let temporaryValue = 0
+    let randomIndex = 0;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -29,12 +31,13 @@ function shuffle(array) {
         temporaryValue = array[currentIndex];
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
+        console.log("eee");
+        console.log(array[currentIndex]);
     }
-
+    console.log("ddd");
     return array;
 }
 
-shuffle(array);
 
 
 
@@ -83,11 +86,13 @@ function openArray(event) {
 
 
 function judgeCard(event) {
-
+//通过co的条件限制，每次调用judgeCard函数时，count的值为2的整数倍
+  // console.log(arrayOpen[count-2],arrayOpen[count-1]);
   //console.log(arrayOpen);
 //使用count，确保比较的是每次最新的点击（不能只考虑索引0和1处的值）
   if (arrayOpen[count-2].firstElementChild.classList.value === arrayOpen[count-1].firstElementChild.classList.value) {
     console.log("match");
+    console.log(arrayOpen[count-2],arrayOpen[count-1]);
 //为什么此刻，arrayOpen中所点击的两个卡片class显示为match?（还没有调用更改class的match函数呀？）它是怎么写入的？
     console.log(arrayOpen);
     matchCard2(event);
@@ -98,39 +103,24 @@ function judgeCard(event) {
     console.log("yyyyy");
     // arrayOpen[0].classList.value = arrayOpen[1].classList.value= "card";
   }
+  //
   co =0;
+  //每进行一次配对比较，就记录一次
+  count1+=1;
+  //记录尝试配对的卡片的对数
+  moveCard(event);
 
 }
 
 
-function matchCard(event) {
-  console.log("test");
-  let cardName=arrayOpen[count-2].firstElementChild.classList.value;
-  console.log(arrayOpen[0]);
-  //因为数组arrayOpen也可以和Html文档连接，所以搜索array数组中（该数组实时存储web中card的状态信息）
-  //和open状态下匹配的卡片图形相同的卡片，在array中修改card的状态
-  for (let i =1; i<array.length; i++) {
-    if (array[i].firstElementChild.classList.value === cardName) {
-      array[i].classList.value = "card match";
-      console.log(array[i]);
-    }
-  }
-  console.log(array);
-  //array中的card的值更新后，对arrayOpen数组的值有什么影响吗？（因为上述for循环更新
-  //array后，测试arrayOpen中的值也更新了）
-  console.log(arrayOpen);
+function moveCard(event) {
+  let move = document.getElementsByClassName('moves');
+  console.log(move);
+  // let content = move[0].textContent;
+  // console.log(content);
+  move[0].textContent = count1;
 }
 
-function matchCard1(event) {
-  for (let i=0; i<count; i++) {
-    //console.log("test match");
-    //console.log(arrayOpen[i].classList.value);
-    if (arrayOpen[i].classList.value === "card open show") {
-      arrayOpen[i].classList.value = "card match";
-    }
-  }
-  // console.log(array);
-}
 
 function matchCard2(event) {
   arrayOpen[count-2].classList.value = arrayOpen[count-1].classList.value = "card match";
@@ -139,11 +129,12 @@ function matchCard2(event) {
 
 
 function notMatch(event) {
-  for (let i=0; i<count; i++) {
-    if (arrayOpen[i].classList.value !== "card match") {
-      console.log(arrayOpen[i].firstElementChild.classList.value);
+  for (let i=count-2; i<count; i++) {
+    //当起始条件为i=count时，需要加判断条件
+    // if (arrayOpen[i].classList.value !== "card match") {
+      // console.log(arrayOpen[i].firstElementChild.classList.value);
       arrayOpen[i].classList.value = "card";
-    }
+    // }
   }
 }
 
@@ -157,17 +148,28 @@ function notMatch(event) {
 
 
 function ll(event) {
-  // console.log(event.target.nodeName);
-  showCard(event);
-  openArray(event);
-  console.log(count);
-  console.log(co);
-  // console.log(arrayOpen[2]);
-  if (co === 2) {
-    judgeCard(event);
-  }else {
-    document.addEventListener('click', ll);
+  console.log(event.target.classList.value);
+  console.log(event.target.nodeName);
+
+  //加入判断语句，仅当点击卡片时，页面响应
+  if (event.target.nodeName === "LI" || event.target.classList.value === "card") {
+    showCard(event);
+    openArray(event);
+    console.log(count);
+    console.log(co);
+    // 仅当有两次点击时，判断卡片的状态；否则继续等待点击
+    if (co === 2) {
+      judgeCard(event);
+    }else {
+      document.addEventListener('click', ll);
+    }
+  }else if (event.target.classList.value === "fa fa-repeat") {
+    console.log("test repeat");
+    console.log(array);
+    shuffle(array);
+    console.log("test!!!!");
   }
+
 
 
   // console.log(memory);
