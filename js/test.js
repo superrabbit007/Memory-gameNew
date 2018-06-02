@@ -19,6 +19,11 @@ let matchSum = 0;
 
 let arrayOpen = [];
 
+let star = document.getElementsByClassName('fa-star');
+let move = document.getElementsByClassName('moves');
+
+
+
 
 //说明：给定的shuffle 函数通过伪随机数的方式，对array中存储的card进行洗牌（打乱顺序）
 //但是更新到界面上的效果是：每运行一次，array中相同索引存储的是不同的card值，看似洗牌成功
@@ -53,8 +58,17 @@ function shuffle(array) {
     }
     console.log(arrayOpen.length);
     co = 0;
-    moveCard(event);
     count=0;
+    count1=0;
+    let move = document.getElementsByClassName('moves');
+    //restart后，将moves置零
+    move[0].textContent = 0;
+    let star1 = document.getElementsByClassName('fa');
+    console.log(star1);
+    for (let i=0; i<3; i++) {
+      star1[i].classList.value = "fa fa-star";
+    }
+
 
     return memory;
 }
@@ -120,9 +134,6 @@ function judgeCard(event) {
   // if () {};
 
 
-
-
-
 //使用count，确保比较的是每次最新的点击（不能只考虑索引0和1处的值）
   if (arrayOpen[count-2].firstElementChild.classList.value === arrayOpen[count-1].firstElementChild.classList.value) {
     console.log("match");
@@ -134,7 +145,9 @@ function judgeCard(event) {
     // matchCard(event);
   }else {
     //延时调用notMatch，先让用户看清楚卡片的图形
-    setTimeout(notMatch,50);
+    setTimeout(notMatch,5);
+
+    // notMatch(event);
     // notMatch(event);
     console.log("yyyyy");
     // arrayOpen[0].classList.value = arrayOpen[1].classList.value= "card";
@@ -145,6 +158,7 @@ function judgeCard(event) {
   count1+=1;
   //记录尝试配对的卡片的对数
   moveCard(event);
+  starScore(event);
 
 }
 
@@ -152,7 +166,7 @@ function judgeCard(event) {
 
 
 function moveCard(event) {
-  let move = document.getElementsByClassName('moves');
+  // let move = document.getElementsByClassName('moves');
   console.log(move);
   console.log(event);
   // let content = move[0].textContent;
@@ -169,11 +183,38 @@ function moveCard(event) {
 
 
 function matchCard2(event) {
-  arrayOpen[count-2].classList.value = arrayOpen[count-1].classList.value = "card match";
+
+  for (let i=count-2; i<count; i++) {
+    arrayOpen[i].classList.value = "card match ani";
+  }
+
+  document.addEventListener('transitionend', function(event){
+    console.log("Great Match!");
+    for (i=count-2; i<count; i++) {
+      arrayOpen[i].classList.value = "card match";
+    }
+  });
+
   matchSum+=1;
   console.log("matchSum:"+ matchSum);
-  if (matchSum === 8) {
+  if (matchSum === 9) {
     console.log("You've finished the game!");
+
+
+    // con.style.cssText = "font-size: 1px";
+
+
+    let popBox = document.getElementById('pop-box');
+    popBox.style.cssText = "top:300px; left:500px; width:600px; height:300px; visibility:visible";
+
+    let popMessage1 = document.getElementsByClassName('pop-message1');
+    popMessage1[0].style.cssText = " width:100%; font-size:1em; text-align:center";
+
+    popMessage1[0].textContent="With "+ matchSum + " Moves and 3 Stars.";
+
+
+    // console.log(popMessage1[0].innerText);
+    // console.log(popBox.textContent);
   }
 
 }
@@ -197,7 +238,34 @@ function notMatch(event) {
   });
 }
 
+//星级评分
+function starScore(event) {
+  console.log('startest');
+  // let star = document.getElementsByClassName('fa-star');
+  // if (count1 === 2) {
+  //   console.log(con[0].classList.value);
+  //   star[2].classList.value = "fa fa-star1";
+  // // star[2].style.cssText = ":before{content = \f006}";
+  // console.log(star);
+  // }
+  switch (count1) {
+    case 2:star[2].classList.value = "fa fa-star1";break;
+    case 6:star[1].classList.value = "fa fa-star1";break;
+    case 7:star[0].classList.value = "fa fa-star1";
+      break;
+    default:console.log('dd');
+  }
+}
 
+
+
+//play again 按钮，刷新游戏界面（并不是刷新整个web）
+function playAgain(array) {
+  shuffle(array);
+  let popBox = document.getElementById('pop-box');
+  popBox.style.cssText = "visibility: hidden";
+  console.log("pophiden test");
+}
 
 
 
@@ -211,8 +279,7 @@ function ll(event) {
   // console.log(event.target.nodeName);
   // console.log(memory);
   // console.log(array);
-  // getEventType(event);
-  // window.open('test.html');
+
   //加入判断语句，仅当点击卡片时，页面响应
   if (event.target.nodeName === "LI" || event.target.classList.value === "card") {
     showCard(event);
@@ -222,11 +289,7 @@ function ll(event) {
     // 仅当有两次点击时，判断卡片的状态；否则继续等待点击
     if (co === 2) {
       judgeCard(event);
-    }else if (event.target.classList.value === "fa fa-repeat") {
-      console.log("test repeat");
-      // console.log(array);
-      shuffle(array);
-      console.log("test!!!!");
+      event.preventDefault();
     }else {
       document.addEventListener('click', ll);
     }
@@ -236,7 +299,6 @@ function ll(event) {
     shuffle(array);
     console.log("test!!!!");
   }
-
 
 
   // console.log(memory);
