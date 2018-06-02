@@ -81,6 +81,21 @@ h1 {
     font-size: 33px;
 }
 
+/* test code 因为open状态下有transform效果，因此只针对show状态*/
+.deck .card.open.show.ani {
+  cursor: default;
+  background: green;
+  font-size: 33px;
+}
+
+.deck .card.open.show.ani {
+  transition-property: font-size;
+  transition-duration: 3s;
+  transition-timing-function: steps(3,end);
+  /* transition-delay: 1s; */
+  font-size: 60px;
+}
+
 /*
  * Styles for the Score Panel
  */

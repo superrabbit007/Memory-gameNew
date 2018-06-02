@@ -27,6 +27,7 @@ let arrayOpen = [];
 function shuffle(array) {
   console.log(array);
   console.log(memory);
+  console.log(event);
     let currentIndex = array.length;
     let temporaryValue = 0
     let randomIndex = 0;
@@ -45,12 +46,24 @@ function shuffle(array) {
       // console.log("array"+ i)
       // console.log(array[i]);
       memory[i].outerHTML = array[i].outerHTML;
+      //针对当用户点击一个卡片，之后点击reset
+      memory[i].classList.value = "card";
       // console.log("memory"+ i);
       // console.log(memory[i]);
     }
-    // console.log(memory);
+    console.log(arrayOpen.length);
+    co = 0;
+    moveCard(event);
+    count=0;
+
     return memory;
 }
+
+
+
+// function getEventType(event) {
+//   alert(event.type);
+// }
 
 
 
@@ -90,9 +103,9 @@ function openArray(event) {
     // arrayOpen.length = array.length;
     //由于点击之后count的最小值为1，数组index需要从0开始，所以此处count-1
     arrayOpen[count-1] = event.target;
-    console.log(array.length);
-    console.log(arrayOpen.length);
-    console.log(arrayOpen);
+    // console.log(array.length);
+    // console.log(arrayOpen.length);
+    // console.log(arrayOpen);
 
   };
 
@@ -120,7 +133,9 @@ function judgeCard(event) {
     // matchCard1(event);
     // matchCard(event);
   }else {
-    notMatch(event);
+    //延时调用notMatch，先让用户看清楚卡片的图形
+    setTimeout(notMatch,50);
+    // notMatch(event);
     console.log("yyyyy");
     // arrayOpen[0].classList.value = arrayOpen[1].classList.value= "card";
   }
@@ -136,13 +151,19 @@ function judgeCard(event) {
 
 
 
-
-
 function moveCard(event) {
   let move = document.getElementsByClassName('moves');
   console.log(move);
+  console.log(event);
   // let content = move[0].textContent;
   // console.log(content);
+  // onclick = document.getElementsByClassName('restart');
+  // document.addEventListener('onclick', function() {
+  //   count1=0;
+  // });
+  // if (event.target.firstElementChild.classList.value === "fa fa-repeat") {
+    // count1=0;
+  // }
   move[0].textContent = count1;
 }
 
@@ -159,16 +180,21 @@ function matchCard2(event) {
 
 
 function notMatch(event) {
-
-
+  // window.setTimeOut(30s);
   for (let i=count-2; i<count; i++) {
     //当起始条件为i=count时，需要加判断条件
     // if (arrayOpen[i].classList.value !== "card match") {
       // console.log(arrayOpen[i].firstElementChild.classList.value);
-      arrayOpen[i].classList.value = "card";
+      arrayOpen[i].classList.value = "card open show ani";
     // }
   }
 
+  document.addEventListener('transitionend', function(event){
+    console.log("Great!");
+    for (i=count-2; i<count; i++) {
+      arrayOpen[i].classList.value = "card";
+    }
+  });
 }
 
 
@@ -185,7 +211,8 @@ function ll(event) {
   // console.log(event.target.nodeName);
   // console.log(memory);
   // console.log(array);
-
+  // getEventType(event);
+  // window.open('test.html');
   //加入判断语句，仅当点击卡片时，页面响应
   if (event.target.nodeName === "LI" || event.target.classList.value === "card") {
     showCard(event);
@@ -195,6 +222,11 @@ function ll(event) {
     // 仅当有两次点击时，判断卡片的状态；否则继续等待点击
     if (co === 2) {
       judgeCard(event);
+    }else if (event.target.classList.value === "fa fa-repeat") {
+      console.log("test repeat");
+      // console.log(array);
+      shuffle(array);
+      console.log("test!!!!");
     }else {
       document.addEventListener('click', ll);
     }
