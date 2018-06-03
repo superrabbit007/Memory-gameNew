@@ -28,6 +28,12 @@ body {
     flex-direction: column;
 }
 
+.container1 {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
 h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
@@ -88,16 +94,16 @@ h1 {
 
 .deck .card.match.ani {
     cursor: default;
-    background: mediumvioletred;
+    background: #02ccba;
     font-size: 60px;
     transition-property: font-size;
-    transition-duration: 0.5s;
+    transition-duration: 0.2s;
     transition-timing-function: linear;
 }
 
-.deck .card.open.show.ani {
+.deck .card.show.ani {
   transition-property: font-size, background;
-  transition-duration: 0.5s;
+  transition-duration: 0.2s;
   transition-timing-function: linear;
   /* transition-delay: 1s; */
   font-size: 60px;
@@ -107,11 +113,13 @@ h1 {
 #pop-box {
   display: flex;
   flex-wrap: wrap;
-  background-color: pink;
+  background: inherit;
   border-radius: 10px;
   box-shadow: 5px 5px 10px 5px grey;
-  width: 300px;
-  height: 200px;
+  top:250px;
+  left:500px;
+  width:600px;
+  height:350px;
   position: absolute;
   visibility: hidden;
   overflow: hidden;
@@ -126,6 +134,14 @@ h1 {
   font-weight: bold;
 }
 
+/* .pop-message .ani {
+  transition-property: font-size;
+  transition-duration: 2s;
+  transition-timing-function: linear;
+  font-size: 2.5em;
+
+} */
+
 .pop-message1 {
   width: 100%;
   font-size: 1em;
@@ -135,7 +151,19 @@ h1 {
 .play-button {
   width: 100%;
   height: 80px;
-  margin: 0 100px;
+  margin: 0 20px;
+  border-radius: 120px;
+}
+
+.close-button {
+  width:30%;
+  height: 60px;
+  margin: 10px;
+  border-radius: 200px;
+}
+
+.close-button::first-letter {
+
 }
 
 /*

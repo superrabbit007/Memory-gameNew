@@ -21,6 +21,10 @@ let arrayOpen = [];
 
 let star = document.getElementsByClassName('fa-star');
 let move = document.getElementsByClassName('moves');
+let divCard = document.getElementsByClassName('container');
+let popBox = document.getElementById('pop-box');
+
+
 
 
 
@@ -30,8 +34,8 @@ let move = document.getElementsByClassName('moves');
 //可是每次运行shuffle之后，测试memory的值，card顺序没有变化，因此需要将array中的顺序
 //重新写入memory中
 function shuffle(array) {
-  console.log(array);
-  console.log(memory);
+  console.log("arrayOpen:"+arrayOpen);
+  // console.log(memory);
   console.log(event);
     let currentIndex = array.length;
     let temporaryValue = 0
@@ -60,6 +64,7 @@ function shuffle(array) {
     co = 0;
     count=0;
     count1=0;
+    matchSum=0;
     let move = document.getElementsByClassName('moves');
     //restart后，将moves置零
     move[0].textContent = 0;
@@ -145,9 +150,9 @@ function judgeCard(event) {
     // matchCard(event);
   }else {
     //延时调用notMatch，先让用户看清楚卡片的图形
-    setTimeout(notMatch,5);
-
-    // notMatch(event);
+    // setTimeout(notMatch,5);
+    //不用延时也可以，因为开始的.ani中有0.1s的时间
+    notMatch(event);
     // notMatch(event);
     console.log("yyyyy");
     // arrayOpen[0].classList.value = arrayOpen[1].classList.value= "card";
@@ -175,9 +180,6 @@ function moveCard(event) {
   // document.addEventListener('onclick', function() {
   //   count1=0;
   // });
-  // if (event.target.firstElementChild.classList.value === "fa fa-repeat") {
-    // count1=0;
-  // }
   move[0].textContent = count1;
 }
 
@@ -197,27 +199,65 @@ function matchCard2(event) {
 
   matchSum+=1;
   console.log("matchSum:"+ matchSum);
-  if (matchSum === 9) {
+  if (matchSum === 3) {
+      setTimeout(pop,500);
+  }
+
+
+  // if (matchSum === 3) {
+  //   console.log("You've finished the game!");
+  //
+  //   // let divCard = document.getElementsByClassName('container');
+  //   console.log(divCard);
+  //   divCard[0].style.cssText = "visibility: hidden";
+  //   // con.style.cssText = "font-size: 1px";
+  //   let starCount = document.getElementsByClassName('fa-star');
+  //   let stCount = starCount.length;
+  //
+  //   // let popBox = document.getElementById('pop-box');
+  //   popBox.style.cssText = "top:300px; left:500px; width:600px; height:300px; visibility: visible";
+  //
+  //   let popMessage1 = document.getElementsByClassName('pop-message1');
+  //   popMessage1[0].style.cssText = " width:100%; font-size:1em; text-align:center";
+  //
+  //   popMessage1[0].textContent="With "+ matchSum + " Moves and "+ starCount.length+" Stars.";
+  //
+  //
+  //   // console.log(popMessage1[0].innerText);
+  //   // console.log(popBox.textContent);
+  // }
+
+}
+
+//弹框
+function pop() {
+  // if (matchSum === 3) {
     console.log("You've finished the game!");
 
-
+    // let divCard = document.getElementsByClassName('container');
+    console.log(divCard);
+    divCard[0].style.cssText = "visibility: hidden";
     // con.style.cssText = "font-size: 1px";
+    let starCount = document.getElementsByClassName('fa-star');
+    let stCount = starCount.length;
 
-
-    let popBox = document.getElementById('pop-box');
-    popBox.style.cssText = "top:300px; left:500px; width:600px; height:300px; visibility:visible";
+    // let popBox = document.getElementById('pop-box');
+    // popBox.style.cssText = "top:300px; left:500px; width:600px; height:300px;
+    popBox.style.cssText = "visibility: visible";
+    // let popMessage = document.getElementsByClassName('pop-message');
+    // popMessage[0].classList.value = "popmessage ani";
 
     let popMessage1 = document.getElementsByClassName('pop-message1');
     popMessage1[0].style.cssText = " width:100%; font-size:1em; text-align:center";
 
-    popMessage1[0].textContent="With "+ matchSum + " Moves and 3 Stars.";
-
-
-    // console.log(popMessage1[0].innerText);
-    // console.log(popBox.textContent);
-  }
+    popMessage1[0].textContent="With "+ matchSum + " Moves and "+ starCount.length+" Stars.";
 
 }
+
+
+
+
+
 
 
 function notMatch(event) {
@@ -262,11 +302,20 @@ function starScore(event) {
 //play again 按钮，刷新游戏界面（并不是刷新整个web）
 function playAgain(array) {
   shuffle(array);
-  let popBox = document.getElementById('pop-box');
+  // let popBox = document.getElementById('pop-box');
   popBox.style.cssText = "visibility: hidden";
+  divCard[0].style.cssText = "visibility: visible";
   console.log("pophiden test");
+  document.addEventListener('click', ll);
 }
 
+function closeGame(array) {
+  console.log("test close");
+  popBox.style.cssText = "visibility: hidden";
+  divCard[0].style.cssText = "visibility: visible";
+  document.addEventListener('click', ll);
+
+}
 
 
 
