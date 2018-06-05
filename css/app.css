@@ -183,3 +183,8 @@ h1 {
 .fa-star1:before {
   content: "\f006";
 }
+
+/* 计时器 */
+.time-count {
+  margin: 0 0 0 2em;
+}
