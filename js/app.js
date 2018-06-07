@@ -1,5 +1,4 @@
 const memory = document.body.getElementsByClassName('card');
-// const memory =document.getElementsByClassName('card');
 
 //将nodeList转化为列表
 let array = Array.from(memory);
@@ -30,9 +29,6 @@ let totalCount = 0;
  */
 
 function shuffle(array) {
-    console.log("arrayOpen:" + arrayOpen);
-    // console.log(memory);
-    console.log(event);
     let currentIndex = array.length;
     let temporaryValue = 0
     let randomIndex = 0;
@@ -79,7 +75,6 @@ function showCard(event) {
     let tags = event.target.classList.value;
     //增加判断，避免多次点击同一卡片时，多次更新tags的值（即只在第一次点击时添加show）
     if (tags === 'card') {
-        //给tags添加show类
         tags = tags + ' show';
         //连接到html中，更新html中该卡片的li-class值
         event.target.classList.value = tags;
@@ -122,6 +117,7 @@ function judgeCard(event) {
     countClick = 0;
     //记录尝试配对的卡片的对数,即moves数
     countMoves += 1;
+
     //更新页面moves和star的数目
     moveCard(event);
     starScore(event);
@@ -152,7 +148,6 @@ function matchCard(event) {
     }
     //动画完成后显示正常匹配样式
     document.addEventListener('transitionend', function(event) {
-        console.log("Great Match!");
         for (let i = countOpen - 2; i < countOpen; i++) {
             arrayOpen[i].classList.value = "card match";
         }
@@ -172,9 +167,6 @@ function matchCard(event) {
 
 //弹框
 function pop() {
-    //console.log("You've finished the game!");
-    // let divCard = document.getElementsByClassName('container');
-    console.log(divCard);
     divCard[0].style.cssText = "visibility: hidden";
     //获取当前实心星星数
     let starCount = document.getElementsByClassName('fa-star');
@@ -186,7 +178,6 @@ function pop() {
     popMessage1[0].textContent = "With " + countMoves + " Moves and " + stCount + " Stars.";
     //输出页面计时
     popMessage1[1].textContent = "Use  " + time[0].textContent;
-    // console.log(time[0]);
 }
 
 
@@ -202,7 +193,6 @@ function notMatch(event) {
     }
 
     document.addEventListener('transitionend', function(event) {
-        console.log("Great!");
         for (let i = countOpen - 2; i < countOpen; i++) {
             arrayOpen[i].classList.value = "card";
         }
@@ -211,8 +201,6 @@ function notMatch(event) {
 
 //星级评分
 function starScore(event) {
-    console.log('startest');
-    // let star = document.getElementsByClassName('fa-star');
     //指定moves时，通过更改class的值，将星星变为空心
     switch (countMoves) {
         case 12:
@@ -237,18 +225,16 @@ function starScore(event) {
 
 
 /***
- *@description play again 按钮，刷新游戏界面（并不是刷新整个web）
+ *@description play again 按钮，刷新游戏界面（并不是刷新整个web，web页面的监听仍然存在）
  *@constructor
  *@param {Array} array 当前页面的卡片数组
  */
 
 function playAgain(array) {
     shuffle(array);
-    // let popBox = document.getElementById('pop-box');
     popBox.style.cssText = "visibility: hidden";
     divCard[0].style.cssText = "visibility: visible";
-    //console.log("pophiden test");
-    document.addEventListener('click', gameClickListen);
+
 }
 
 
@@ -258,10 +244,8 @@ function playAgain(array) {
  *@constructor
  */
 function closeGame(array) {
-    //console.log("test close");
     popBox.style.cssText = "visibility: hidden";
     divCard[0].style.cssText = "visibility: visible";
-    document.addEventListener('click', gameClickListen);
 
 }
 
@@ -321,32 +305,27 @@ function timeFormat(seconds) {
  */
 
 function gameClickListen(event) {
-    totalCount += 1;
     showCard(event);
     openArray(event);
     //加入判断语句，仅当点击卡片时，页面响应
     if (event.target.nodeName === "LI" || event.target.classList.value === "card") {
 
+        totalCount += 1;
         //仅当第一次点击时，页面开始计时，totalCount条件避免多次点击同一张卡片时，多次调用计时器
-        console.log(countOpen);
         if (countClick === 1 && totalCount === 1) {
-            console.log("test time!!!!");
             timeCount(event);
         }
         // 仅当有两次点击时，判断卡片的状态；否则继续等待点击
         if (countClick === 2) {
             judgeCard(event);
             event.preventDefault();
-        } else {
-            document.addEventListener('click', gameClickListen);
         }
+
     } else if (event.target.classList.value === "fa fa-repeat") {
         shuffle(array);
-        document.addEventListener('click', gameClickListen);
     }
 
 }
-
 
 
 document.addEventListener('click', gameClickListen);
